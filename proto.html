@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>EM Services - Lift Inspection & Estate Management Portal</title>
+    <link rel="stylesheet" href="proto.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Top Prototype Global Bar (Direct Quick Switcher for 5 Roles + Device View Mode) -->
+    <div class="proto-top-nav">
+        <div class="proto-brand">
+            <i class="fa-solid fa-elevator"></i>
+            <span>BEAP Prototype</span>
+            <span class="tag">Form 12b</span>
+        </div>
+        <div class="proto-controls">
+            <span style="font-size:0.68rem; color:#94a3b8;">Switch Role:</span>
+            <div class="role-switcher-pills">
+                <button type="button" class="role-pill" data-role="welcome" title="Figma 01 Welcome Screen">
+                    <i class="fa-solid fa-door-open"></i> Welcome
+                </button>
+                <button type="button" class="role-pill manager" data-role="manager" title="Estate Manager">
+                    <i class="fa-solid fa-user-tie"></i> Estate Manager
+                </button>
+                <button type="button" class="role-pill contractor" data-role="contractor" title="Lift contractor">
+                    <i class="fa-solid fa-screwdriver-wrench"></i> Lift Contractor
+                </button>
+                <button type="button" class="role-pill inspector" data-role="inspector" title="EMS Inspector">
+                    <i class="fa-solid fa-clipboard-check"></i> EMS Inspector
+                </button>
+                <button type="button" class="role-pill resident" data-role="resident" title="Resident">
+                    <i class="fa-solid fa-house-user"></i> Resident
+                </button>
+                <button type="button" class="role-pill admin" data-role="admin" title="Admin">
+                    <i class="fa-solid fa-shield-halved"></i> Admin
+                </button>
+            </div>
+            <div class="view-mode-toggle">
+                <i class="fa-solid fa-display"></i>
+                <button type="button" id="btnViewMobile" class="active">Mobile</button>
+                <button type="button" id="btnViewDesktop">Laptop</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- App Wrapper / Mobile Frame -->
+    <div class="app-wrapper" id="appWrapper">
+        <div class="mobile-container">
+            <!-- EM Services Brand Header -->
+            <header class="app-header">
+                <div class="brand-text-logo">EM SERVICES</div>
+                <div class="header-actions">
+                    <div id="userHeaderBadge" class="user-current-badge" style="display:none;">
+                        <span id="headerRoleName">Estate Manager</span>
+                    </div>
+                    <button type="button" class="header-logout-btn" id="headerLogoutBtn" title="Sign Out / Back to Welcome" style="display:none;">
+                        <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    </button>
+                </div>
+            </header>
+
+            <!-- App Scrollable Content Area -->
+            <main class="app-content">
+
+                <!-- 1. ZELEN FIGMA: 01 WELCOME SCREEN (TWO PORTAL CARDS) -->
+                <div id="view-welcome" class="screen-view active">
+                    <div class="welcome-portal-wrap">
+                        <h1 class="welcome-portal-title">Welcome to EM Services</h1>
+                        <p class="welcome-portal-subtitle">Lift Inspection & Estate Management Portal</p>
+
+                        <div class="portal-cards-grid">
+                            <div class="portal-selection-card">
+                                <div class="portal-icon-box resident-icon">
+                                    <i class="fa-solid fa-house"></i>
+                                </div>
+                                <h2>Resident Portal</h2>
+                                <p>Access resident services and view lift updates in your block.</p>
+                                <button type="button" class="btn-portal" id="btnGoResidentLogin">Resident Login</button>
+                            </div>
+
+                            <div class="portal-selection-card">
+                                <div class="portal-icon-box org-icon">
+                                    <i class="fa-solid fa-building"></i>
+                                </div>
+                                <h2>Organisation Portal</h2>
+                                <p>Secure access for EMS Inspectors, Contractors and Estate Managers.</p>
+                                <button type="button" class="btn-portal" id="btnGoOrgLogin">Organisation Login</button>
+                            </div>
+                        </div>
+
+                        <div class="welcome-footer-tag">
+                            Prototype for IT2827 BEAP • 12b Lift Inspection Spot-Check • Authentication & Role-Based Authorisation
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 2. ZELEN FIGMA: ORGANISATION LOGIN SCREEN -->
+                <div id="view-org-login" class="screen-view">
+                    <div class="figma-auth-card">
+                        <div class="figma-auth-header">
+                            <h2>Organisation Login</h2>
+                            <p>Secure access for authorised personnel.</p>
+                        </div>
+
+                        <form id="formOrgLogin" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="figma-field-group">
+                                <label>Organisation email address</label>
+                                <input type="email" id="inputOrgEmail" class="figma-input" placeholder="name@organisation.com" value="inspector@emservices.sg" required>
+                            </div>
+
+                            <button type="submit" class="btn-primary-blue">Continue with SSO</button>
+
+                            <div style="font-size:0.72rem; color:var(--text-secondary); line-height:1.4; background:#f8fafc; padding:8px 10px; border-radius:8px; border:1px solid #e2e8f0;">
+                                Your role is assigned by an administrator and checked by the system after you sign in. It cannot be selected or changed here.
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.74rem; margin-top:4px;">
+                                <a href="#" id="linkActivateAccount" style="color:#0263b3; text-decoration:none; font-weight:600;">Activate Invited Account</a>
+                                <a href="#" id="linkBackWelcomeFromOrg" style="color:var(--text-secondary); text-decoration:none;">Back to Welcome</a>
+                            </div>
+                        </form>
+
+                        <!-- PROTOTYPE DEMO ONLY CHIPS (From Zelen Figma) -->
+                        <div class="proto-demo-box">
+                            <span class="proto-demo-title">PROTOTYPE DEMO ONLY • QUICK SIGN IN</span>
+                            <div class="demo-chips-list">
+                                <button type="button" class="demo-chip-btn" onclick="directLoginAs('manager')">
+                                    <span>Estate Manager</span>
+                                    <span class="role-tag" style="background:#eff6ff; color:#2563eb;">MFA Verified</span>
+                                </button>
+                                <button type="button" class="demo-chip-btn" onclick="directLoginAs('contractor')">
+                                    <span>Lift contractor (Mitsubishi LC)</span>
+                                    <span class="role-tag" style="background:#fffbeb; color:#f59e0b;">MFA Verified</span>
+                                </button>
+                                <button type="button" class="demo-chip-btn" onclick="directLoginAs('inspector')">
+                                    <span>EMS Inspector (Wee Boon)</span>
+                                    <span class="role-tag" style="background:#ecfdf5; color:#10b981;">MFA Verified</span>
+                                </button>
+                                <button type="button" class="demo-chip-btn" onclick="directLoginAs('admin')">
+                                    <span>Administrator</span>
+                                    <span class="role-tag" style="background:#f5f3ff; color:#8b5cf6;">MFA Verified</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 3. ZELEN FIGMA: 02 RESIDENT LOGIN SCREEN -->
+                <div id="view-resident-login" class="screen-view">
+                    <div class="figma-auth-card">
+                        <div class="figma-auth-header">
+                            <h2>Resident Login</h2>
+                            <p>Sign in to access resident services.</p>
+                        </div>
+
+                        <form id="formResidentLogin" style="display:flex; flex-direction:column; gap:12px;">
+                            <div class="figma-field-group">
+                                <label>Email address</label>
+                                <input type="email" id="inputResidentEmail" class="figma-input" placeholder="name@example.com" value="resident@woodlands.sg" required>
+                            </div>
+
+                            <div class="figma-field-group">
+                                <label>Password</label>
+                                <div class="password-wrap">
+                                    <input type="password" id="inputResidentPw" class="figma-input" value="Resident#2026" required>
+                                    <button type="button" class="toggle-show-btn" id="btnToggleResidentPw">Show</button>
+                                </div>
+                            </div>
+
+                            <div style="display:flex; justify-content:space-between; align-items:center; font-size:0.72rem;">
+                                <label style="display:flex; align-items:center; gap:6px; cursor:pointer;">
+                                    <input type="checkbox" checked style="accent-color:#0263b3;"> Remember me
+                                </label>
+                                <a href="#" id="linkResidentForgotPw" style="color:#0263b3; text-decoration:none; font-weight:600;">Forgot Password?</a>
+                            </div>
+
+                            <button type="submit" class="btn-primary-blue">Sign In</button>
+
+                            <div style="text-align:center; font-size:0.75rem; color:var(--text-secondary); margin-top:4px;">
+                                New to EM Services?
+                            </div>
+
+                            <button type="button" class="btn-secondary-outline" id="btnGoResidentSignUp">Create Account</button>
+
+                            <div style="text-align:center; margin-top:4px;">
+                                <a href="#" id="linkBackWelcomeFromResident" style="color:var(--text-secondary); font-size:0.74rem; text-decoration:none;">Back to Welcome</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- 4. ZELEN FIGMA: 03 RESIDENT SIGN UP -->
+                <div id="view-resident-signup" class="screen-view">
+                    <div class="figma-auth-card">
+                        <div class="figma-auth-header">
+                            <h2>Create Resident Account</h2>
+                            <p>Register to access resident services.</p>
+                        </div>
+
+                        <form id="formResidentSignUp" style="display:flex; flex-direction:column; gap:10px;">
+                            <div class="figma-field-group">
+                                <label>Full Name</label>
+                                <input type="text" class="figma-input" placeholder="Enter your full name" value="Daniel Tan" required>
+                            </div>
+
+                            <div class="figma-input-row">
+                                <div class="figma-field-group">
+                                    <label>Address</label>
+                                    <input type="text" class="figma-input" placeholder="Enter street address" value="Woodlands St 53" required>
+                                </div>
+                                <div class="figma-field-group">
+                                    <label>Block</label>
+                                    <input type="text" class="figma-input" placeholder="e.g. 554" value="554" required>
+                                </div>
+                            </div>
+
+                            <div class="figma-input-row">
+                                <div class="figma-field-group">
+                                    <label>Unit Number</label>
+                                    <input type="text" class="figma-input" placeholder="e.g. #08-123" value="#09-241" required>
+                                </div>
+                                <div class="figma-field-group">
+                                    <label>Postal Code</label>
+                                    <input type="text" class="figma-input" placeholder="6-digit postal" value="730554" required>
+                                </div>
+                            </div>
+
+                            <div class="figma-field-group">
+                                <label>Email Address</label>
+                                <input type="email" class="figma-input" placeholder="name@example.com" value="daniel.tan@woodlands.sg" required>
+                            </div>
+
+                            <div class="figma-field-group">
+                                <label>Password</label>
+                                <input type="password" class="figma-input" value="Pass@2026" required>
+                                <div class="pwd-strength-grid">
+                                    <div class="pwd-rule met"><i class="fa-solid fa-circle-check"></i> At least 8 characters</div>
+                                    <div class="pwd-rule met"><i class="fa-solid fa-circle-check"></i> One uppercase letter</div>
+                                    <div class="pwd-rule met"><i class="fa-solid fa-circle-check"></i> One number</div>
+                                    <div class="pwd-rule met"><i class="fa-solid fa-circle-check"></i> One special character</div>
+                                </div>
+                            </div>
+
+                            <div style="font-size:0.72rem; display:flex; align-items:center; gap:6px; margin:4px 0;">
+                                <input type="checkbox" checked required style="accent-color:#0263b3;">
+                                <span>I agree to the Terms and Conditions</span>
+                            </div>
+
+                            <button type="submit" class="btn-primary-blue">Create Account</button>
+
+                            <div style="text-align:center; font-size:0.74rem;">
+                                <a href="#" id="linkBackResidentLogin" style="color:#0263b3; text-decoration:none; font-weight:600;">Already have an account? Sign In</a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- ROLE 1: ESTATE MANAGER PORTAL -->
+                <div id="view-role-manager" class="screen-view">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <div>
+                            <span class="status-badge" style="background:#eff6ff; color:#2563eb;">Estate Management</span>
+                            <h1 style="font-size:1.3rem; font-weight:800; color:#0f2b48; margin-top:4px;">Estate Overview</h1>
+                        </div>
+                        <span class="status-badge scheduled">SBTC Woodgrove</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-label">Total Estate Lifts</span>
+                            <span class="stat-value">124</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Inspected This Mo.</span>
+                            <span class="stat-value" style="color:#10b981;">32</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Pending Defects</span>
+                            <span class="stat-value" style="color:#ef4444;">4</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">2-Wk SLA Clear</span>
+                            <span class="stat-value" style="color:#2563eb;">96%</span>
+                        </div>
+                    </div>
+
+                    <div class="item-card">
+                        <div class="item-card-top">
+                            <div class="item-title-block">
+                                <h3><i class="fa-solid fa-elevator" style="color:#2563eb;"></i> Woodlands St 53 Blk 554 Lift A</h3>
+                                <p>Sembawang Town Council • Contractor: Mitsubishi</p>
+                            </div>
+                            <span class="status-badge defects">Defects Reported</span>
+                        </div>
+                        <div style="font-size:0.75rem; color:#64748b; margin-bottom:8px;">
+                            4 defects flagged during spot-check on 25/03/2026. 2-Week SLA deadline countdown active.
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center;">
+                            <span class="sla-badge urgent"><i class="fa-regular fa-clock"></i> 12 Days Remaining</span>
+                            <button type="button" class="btn-primary-blue" style="padding:6px 12px; font-size:0.74rem;" onclick="directLoginAs('inspector')">
+                                View Form 12b
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROLE 2: LIFT CONTRACTOR PORTAL -->
+                <div id="view-role-contractor" class="screen-view">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <div>
+                            <span class="status-badge" style="background:#fffbeb; color:#f59e0b;">Contractor Portal</span>
+                            <h1 style="font-size:1.3rem; font-weight:800; color:#0f2b48; margin-top:4px;">Defect Work Orders</h1>
+                        </div>
+                        <span class="status-badge warning">Mitsubishi LC</span>
+                    </div>
+
+                    <div class="item-card">
+                        <div class="item-card-top">
+                            <div class="item-title-block">
+                                <h3>Blk 554 Lift A - Woodlands St 53</h3>
+                                <p>Reported by LMS Inspector: Wee Boon</p>
+                            </div>
+                            <span class="sla-badge urgent"><i class="fa-regular fa-clock"></i> 12 Days Left</span>
+                        </div>
+
+                        <div style="font-size:0.74rem; background:#f8fafc; padding:10px; border-radius:8px; margin-bottom:10px;">
+                            <strong>Flagged Items to Rectify (Form 12b):</strong>
+                            <ul style="margin-left:16px; margin-top:4px; color:#475569;">
+                                <li>(A1) Motor room cleanliness: Unwanted items to remove</li>
+                                <li>(B2) Car fan & grille: Fan grill to clean</li>
+                                <li>(C6) Car top safety: Oil can to top up</li>
+                                <li>(C8) Lift pit cleanliness: Debris to clean</li>
+                            </ul>
+                        </div>
+
+                        <div class="junxi-photo-rule-box" style="margin-bottom:10px;">
+                            <span><i class="fa-solid fa-camera"></i> Proof Photo (&lt;100KB Limit):</span>
+                            <button type="button" class="btn-secondary-outline" style="padding:4px 8px; font-size:0.7rem;" onclick="showToast('Proof photo captured (64 KB) - Compliant with 100KB limit')">
+                                <i class="fa-solid fa-upload"></i> Upload Proof (64 KB)
+                            </button>
+                        </div>
+
+                        <div class="signature-card">
+                            <div style="display:flex; justify-content:space-between; font-size:0.74rem; font-weight:700; margin-bottom:4px;">
+                                <span><i class="fa-solid fa-signature"></i> Technician Signature</span>
+                                <button type="button" style="background:none; border:none; color:#ef4444; font-size:0.7rem; cursor:pointer;" id="btnClearTechSign">Clear</button>
+                            </div>
+                            <canvas id="canvasTechSign" class="signature-canvas" width="380" height="90"></canvas>
+                        </div>
+
+                        <button type="button" class="btn-primary-blue" style="margin-top:10px;" onclick="showToast('Defect rectification submitted to Estate Manager!')">
+                            <i class="fa-solid fa-check-double"></i> Submit for Joint Inspection
+                        </button>
+                    </div>
+                </div>
+
+                <!-- ROLE 3: EMS INSPECTOR & JUNXI'S CHECKLIST -->
+                <div id="view-role-inspector" class="screen-view">
+                    <div class="junxi-checklist-header">
+                        <div class="junxi-lift-badge-row">
+                            <span class="junxi-lift-brand"><i class="fa-solid fa-building"></i> SBTC • MITSUBISHI</span>
+                            <span class="status-badge pending">Form 12b</span>
+                        </div>
+                        <h2>Blk 554 Lift A - Woodlands St 53</h2>
+                        <p>Spot-Check of Lift Company Servicing (Junxi's Checklist)</p>
+                        <div class="junxi-meta-chips">
+                            <span class="junxi-chip"><i class="fa-regular fa-calendar"></i> Serviced: 23/03/2026</span>
+                            <span class="junxi-chip"><i class="fa-solid fa-user-check"></i> Checked: 25/03/2026</span>
+                            <span class="junxi-chip"><i class="fa-solid fa-user"></i> Inspector: Wee Boon</span>
+                        </div>
+                    </div>
+
+                    <div class="junxi-progress-bar-wrap">
+                        <span>Checklist: <strong>25 / 25 Items Verified</strong></span>
+                        <span id="junxiDefectSummaryBadge" class="status-badge defects">4 Defects Spotted</span>
+                    </div>
+
+                    <div class="checklist-category-pill active">
+                        <span>(A) MOTOR ROOM (9 Items)</span>
+                        <span style="font-size:0.68rem; font-weight:700;">1 Defect</span>
+                    </div>
+                    <div id="junxiSectionA_Items"></div>
+
+                    <div class="checklist-category-pill active" style="margin-top:12px;">
+                        <span>(B) LIFT CAR (8 Items)</span>
+                        <span style="font-size:0.68rem; font-weight:700;">1 Defect</span>
+                    </div>
+                    <div id="junxiSectionB_Items"></div>
+
+                    <div class="checklist-category-pill active" style="margin-top:12px;">
+                        <span>(C) HOISTWAY & LIFT PIT (8 Items)</span>
+                        <span style="font-size:0.68rem; font-weight:700;">2 Defects</span>
+                    </div>
+                    <div id="junxiSectionC_Items"></div>
+
+                    <div class="signature-card">
+                        <div style="display:flex; justify-content:space-between; font-size:0.74rem; font-weight:700; margin-bottom:4px;">
+                            <span><i class="fa-solid fa-signature"></i> Checked By: Inspector Signature</span>
+                            <button type="button" style="background:none; border:none; color:#ef4444; font-size:0.7rem; cursor:pointer;" id="btnClearInspectorSign">Clear</button>
+                        </div>
+                        <canvas id="canvasInspectorSign" class="signature-canvas" width="380" height="90"></canvas>
+                        <span style="font-size:0.65rem; color:#64748b; margin-top:2px; display:block;">Endorsed by Wee Boon (LMS Staff)</span>
+                    </div>
+
+                    <button type="button" class="btn-primary-blue" style="margin-top:12px;" onclick="showToast('Form 12b submitted! Defects emailed to Lift Contractor.'); directLoginAs('contractor');">
+                        <i class="fa-solid fa-paper-plane"></i> Submit Report & Notify Contractor
+                    </button>
+                </div>
+
+                <!-- ROLE 4: RESIDENT PORTAL -->
+                <div id="view-role-resident" class="screen-view">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <div>
+                            <span class="status-badge" style="background:#fdf2f8; color:#db2777;">Resident Services</span>
+                            <h1 style="font-size:1.3rem; font-weight:800; color:#0f2b48; margin-top:4px;">My Block Lifts</h1>
+                        </div>
+                        <span class="status-badge completed">Blk 554 #09-241</span>
+                    </div>
+
+                    <div class="item-card">
+                        <div class="item-card-top">
+                            <div class="item-title-block">
+                                <h3>Lift A (Passenger)</h3>
+                                <p>Last Serviced: 23 Mar 2026 • Spot-Check Passed</p>
+                            </div>
+                            <span class="status-badge completed"><i class="fa-solid fa-circle-check"></i> Operational</span>
+                        </div>
+                        <div style="font-size:0.74rem; color:var(--text-secondary); margin-bottom:8px;">
+                            Lift operating normally. Next monthly maintenance scheduled for 22 April 2026.
+                        </div>
+                        <button type="button" class="btn-secondary-outline" style="width:100%; font-size:0.76rem;" onclick="openReportModal('Lift A')">
+                            <i class="fa-solid fa-bullhorn"></i> Report Lift Noise / Issue
+                        </button>
+                    </div>
+
+                    <div class="item-card">
+                        <div class="item-card-top">
+                            <div class="item-title-block">
+                                <h3>Lift B (Fireman / Large)</h3>
+                                <p>Routine Maintenance Schedule: Today 2:00 PM - 4:00 PM</p>
+                            </div>
+                            <span class="status-badge warning"><i class="fa-solid fa-wrench"></i> Servicing Soon</span>
+                        </div>
+                        <div style="font-size:0.74rem; color:var(--text-secondary);">
+                            Lift contractor Mitsubishi will conduct routine monthly checks. Alternate lift A remains in service.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ROLE 5: ADMIN PORTAL -->
+                <div id="view-role-admin" class="screen-view">
+                    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
+                        <div>
+                            <span class="status-badge" style="background:#f5f3ff; color:#8b5cf6;">Admin & Legal Oversight</span>
+                            <h1 style="font-size:1.3rem; font-weight:800; color:#0f2b48; margin-top:4px;">Form 12b Archive</h1>
+                        </div>
+                        <button type="button" class="btn-secondary-outline" style="padding:4px 8px; font-size:0.7rem;" onclick="downloadYearlyCsv()">
+                            <i class="fa-solid fa-download"></i> Export Year File
+                        </button>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <span class="stat-label">Total Checks</span>
+                            <span class="stat-value">128</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">SLA Rate</span>
+                            <span class="stat-value" style="color:#10b981;">94.8%</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Active Lifts</span>
+                            <span class="stat-value">1,420</span>
+                        </div>
+                        <div class="stat-card">
+                            <span class="stat-label">Town Councils</span>
+                            <span class="stat-value">6 TC</span>
+                        </div>
+                    </div>
+
+                    <div class="item-card">
+                        <h3 style="font-size:0.85rem; font-weight:700; margin-bottom:6px;">Archived Form 12b Records</h3>
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-top:1px solid #f1f5f9; font-size:0.74rem;">
+                            <div>
+                                <strong>Blk 554 Lift A - Woodlands St 53</strong>
+                                <div style="color:#64748b; font-size:0.68rem;">Checked: 25/03/2026 • Wee Boon</div>
+                            </div>
+                            <span class="status-badge defects">4 Defects</span>
+                        </div>
+                        <div style="display:flex; justify-content:space-between; align-items:center; padding:8px 0; border-top:1px solid #f1f5f9; font-size:0.74rem;">
+                            <div>
+                                <strong>Blk 573 Lift C - Woodlands Dr 44</strong>
+                                <div style="color:#64748b; font-size:0.68rem;">Checked: 18/03/2026 • Sarah Tan</div>
+                            </div>
+                            <span class="status-badge completed">Cleared</span>
+                        </div>
+                    </div>
+                </div>
+
+            </main>
+
+            <!-- DYNAMIC ROLE-SPECIFIC BOTTOM NAVIGATION BARS (DIFFERING TABS FOR EACH OF THE 5 ROLES) -->
+            <nav class="role-bottom-nav manager" id="roleBottomNav" style="display:none;"></nav>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-notice" id="toastNotice">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toastMsg">Action completed</span>
+    </div>
+
+    <script>
+        const CHECKLIST_ITEMS = {
+            A: [
+                { id: "A1", num: "(1)", text: "Motor room cleanliness - Any debris?", defaultDefect: true, remark: "Unwanted things to remove" },
+                { id: "A2", num: "(2)", text: "Cleanliness of traction machine - Any leakage?", defaultDefect: false, remark: "" },
+                { id: "A3", num: "(3)", text: "Controller contactors & relays - Any humming?", defaultDefect: false, remark: "" },
+                { id: "A4", num: "(4)", text: "Bearings - Any abnormal noise?", defaultDefect: false, remark: "" },
+                { id: "A5", num: "(5)", text: "Wire ropes (main rope & governor rope) and sheaves - Any wear or red dust?", defaultDefect: false, remark: "" },
+                { id: "A6", num: "(6)", text: "Brake drum & lining - Sign of worn off? Oily?", defaultDefect: false, remark: "" },
+                { id: "A7", num: "(7)", text: "Governor Machine - Any abnormal noise?", defaultDefect: false, remark: "" },
+                { id: "A8", num: "(8)", text: "Anti Crime device - Functioning?", defaultDefect: false, remark: "" },
+                { id: "A9", num: "(9)", text: "ARD & EBOPS - Functioning? Replacement date?", defaultDefect: false, remark: "" }
+            ],
+            B: [
+                { id: "B1", num: "(1)", text: "COB buttons & CPI - Functioning?", defaultDefect: false, remark: "" },
+                { id: "B2", num: "(2)", text: "Car Fan & Grille - Any abnormalities?", defaultDefect: true, remark: "Fan grill to clean" },
+                { id: "B3", num: "(3)", text: "Car lights & diffuser - Lighted up and clear?", defaultDefect: false, remark: "" },
+                { id: "B4", num: "(4)", text: "Car door operation - Any noise?", defaultDefect: false, remark: "" },
+                { id: "B5", num: "(5)", text: "Door side gaps - Less than 10mm?", defaultDefect: false, remark: "" },
+                { id: "B6", num: "(6)", text: "Sill to sill clearance - Less than 35mm?", defaultDefect: false, remark: "" },
+                { id: "B7", num: "(7)", text: "Safety edge & sensor - Functioning?", defaultDefect: false, remark: "" },
+                { id: "B8", num: "(8)", text: "Travelling - Any jerkiness?", defaultDefect: false, remark: "" }
+            ],
+            C: [
+                { id: "C1", num: "(1)", text: "Hall buttons & HPI - Functioning?", defaultDefect: false, remark: "" },
+                { id: "C2", num: "(2)", text: "All landing door locks adjustment - Any noise?", defaultDefect: false, remark: "" },
+                { id: "C3", num: "(3)", text: "All landing door shoes, tracks and eccentric rollers clearance - Any sign of wear and tear?", defaultDefect: false, remark: "" },
+                { id: "C4", num: "(4)", text: "All landing door self-closing devices - Self-closing?", defaultDefect: false, remark: "" },
+                { id: "C5", num: "(5)", text: "Levelling at each landings - Level?", defaultDefect: false, remark: "" },
+                { id: "C6", num: "(6)", text: "Car top safety and cleanliness - Any safety netting?", defaultDefect: true, remark: "Car top oil can to top up" },
+                { id: "C7", num: "(7)", text: "All safety switches - Functioning?", defaultDefect: false, remark: "" },
+                { id: "C8", num: "(8)", text: "Lift pit cleanliness - Any debris?", defaultDefect: true, remark: "Lift pit to clean" }
+            ]
+        };
+
+        const ROLE_NAV_BARS = {
+            manager: [
+                { id: 'm-dash', icon: 'fa-chart-pie', label: 'Dashboard', active: true },
+                { id: 'm-sched', icon: 'fa-calendar-days', label: 'Lift Sched', active: false },
+                { id: 'm-defects', icon: 'fa-triangle-exclamation', label: 'Defect SLA', badge: '4', active: false },
+                { id: 'm-joint', icon: 'fa-handshake', label: 'Joint Endorse', active: false },
+                { id: 'm-profile', icon: 'fa-circle-user', label: 'Profile', active: false }
+            ],
+            contractor: [
+                { id: 'c-jobs', icon: 'fa-wrench', label: 'Job Orders', badge: '4', active: true },
+                { id: 'c-rectify', icon: 'fa-screwdriver-wrench', label: 'Rectify', active: false },
+                { id: 'c-esign', icon: 'fa-file-signature', label: 'E-Sign', active: false },
+                { id: 'c-service', icon: 'fa-calendar-check', label: 'Servicing', active: false },
+                { id: 'c-profile', icon: 'fa-circle-user', label: 'Profile', active: false }
+            ],
+            inspector: [
+                { id: 'i-queue', icon: 'fa-list-check', label: 'My Queue', active: false },
+                { id: 'i-spotcheck', icon: 'fa-clipboard-check', label: 'Spot-Check 12b', active: true },
+                { id: 'i-defects', icon: 'fa-triangle-exclamation', label: 'Defects Sent', badge: '4', active: false },
+                { id: 'i-joint', icon: 'fa-signature', label: 'Joint Sign', active: false },
+                { id: 'i-profile', icon: 'fa-circle-user', label: 'Profile', active: false }
+            ],
+            resident: [
+                { id: 'r-block', icon: 'fa-building', label: 'My Block', active: true },
+                { id: 'r-report', icon: 'fa-bullhorn', label: 'Report Issue', active: false },
+                { id: 'r-schedule', icon: 'fa-calendar', label: 'Schedule', active: false },
+                { id: 'r-notices', icon: 'fa-bell', label: 'Notices', badge: '1', active: false },
+                { id: 'r-profile', icon: 'fa-circle-user', label: 'Profile', active: false }
+            ],
+            admin: [
+                { id: 'a-overview', icon: 'fa-gauge-high', label: 'Overview', active: true },
+                { id: 'a-registry', icon: 'fa-building-columns', label: 'Lifts & TC', active: false },
+                { id: 'a-archive', icon: 'fa-box-archive', label: 'Archive 12b', active: false },
+                { id: 'a-export', icon: 'fa-file-arrow-down', label: 'Export Data', active: false },
+                { id: 'a-access', icon: 'fa-user-shield', label: 'Access Control', active: false }
+            ]
+        };
+
+        const screens = {
+            welcome: document.getElementById('view-welcome'),
+            'org-login': document.getElementById('view-org-login'),
+            'resident-login': document.getElementById('view-resident-login'),
+            'resident-signup': document.getElementById('view-resident-signup'),
+            manager: document.getElementById('view-role-manager'),
+            contractor: document.getElementById('view-role-contractor'),
+            inspector: document.getElementById('view-role-inspector'),
+            resident: document.getElementById('view-role-resident'),
+            admin: document.getElementById('view-role-admin')
+        };
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setupNavigationFlows();
+            renderJunxiChecklist();
+            setupCanvasDrawing('canvasInspectorSign', 'btnClearInspectorSign');
+            setupCanvasDrawing('canvasTechSign', 'btnClearTechSign');
+            setupViewToggle();
+        });
+
+        function showToast(msg) {
+            const toast = document.getElementById('toastNotice');
+            const toastMsg = document.getElementById('toastMsg');
+            toastMsg.textContent = msg;
+            toast.classList.add('show');
+            setTimeout(() => toast.classList.remove('show'), 2400);
+        }
+
+        function showScreen(screenKey) {
+            Object.values(screens).forEach(s => s && s.classList.remove('active'));
+            if (screens[screenKey]) screens[screenKey].classList.add('active');
+
+            const headerBadge = document.getElementById('userHeaderBadge');
+            const headerRoleName = document.getElementById('headerRoleName');
+            const headerLogoutBtn = document.getElementById('headerLogoutBtn');
+
+            const isAuthFlow = ['welcome', 'org-login', 'resident-login', 'resident-signup'].includes(screenKey);
+
+            if (isAuthFlow) {
+                headerBadge.style.display = 'none';
+                headerLogoutBtn.style.display = 'none';
+                updateRoleBottomNav(null);
+            } else {
+                headerBadge.style.display = 'flex';
+                headerLogoutBtn.style.display = 'block';
+
+                const titles = {
+                    manager: 'Estate Manager',
+                    contractor: 'Lift Contractor',
+                    inspector: 'EMS Inspector',
+                    resident: 'Resident',
+                    admin: 'Admin'
+                };
+                headerRoleName.textContent = titles[screenKey] || screenKey;
+                updateRoleBottomNav(screenKey);
+            }
+
+            document.querySelectorAll('.role-pill').forEach(p => {
+                if (p.dataset.role === screenKey) p.classList.add('active');
+                else p.classList.remove('active');
+            });
+        }
+
+        function updateRoleBottomNav(role) {
+            const nav = document.getElementById('roleBottomNav');
+            if (!role || !ROLE_NAV_BARS[role]) {
+                nav.style.display = 'none';
+                return;
+            }
+
+            nav.style.display = 'flex';
+            nav.className = `role-bottom-nav ${role}`;
+            const tabs = ROLE_NAV_BARS[role];
+
+            nav.innerHTML = tabs.map((tab, idx) => `
+                <button type="button" class="nav-tab-item ${tab.active ? 'active' : ''}" onclick="clickNavTab('${role}', ${idx}, '${tab.label}')">
+                    <i class="fa-solid ${tab.icon}"></i>
+                    <span>${tab.label}</span>
+                    ${tab.badge ? `<span class="nav-badge">${tab.badge}</span>` : ''}
+                </button>
+            `).join('');
+        }
+
+        function clickNavTab(role, tabIdx, label) {
+            ROLE_NAV_BARS[role].forEach((t, i) => t.active = (i === tabIdx));
+            updateRoleBottomNav(role);
+            showToast(`${label} selected`);
+        }
+
+        function directLoginAs(role) {
+            showScreen(role);
+            showToast(`Signed in as ${role.toUpperCase()}`);
+        }
+
+        function setupNavigationFlows() {
+            document.querySelectorAll('.role-pill').forEach(btn => {
+                btn.addEventListener('click', () => showScreen(btn.dataset.role));
+            });
+
+            document.getElementById('btnGoResidentLogin').addEventListener('click', () => showScreen('resident-login'));
+            document.getElementById('btnGoOrgLogin').addEventListener('click', () => showScreen('org-login'));
+
+            document.getElementById('linkBackWelcomeFromOrg').addEventListener('click', (e) => { e.preventDefault(); showScreen('welcome'); });
+            document.getElementById('linkBackWelcomeFromResident').addEventListener('click', (e) => { e.preventDefault(); showScreen('welcome'); });
+            document.getElementById('linkBackResidentLogin').addEventListener('click', (e) => { e.preventDefault(); showScreen('resident-login'); });
+
+            document.getElementById('btnGoResidentSignUp').addEventListener('click', () => showScreen('resident-signup'));
+            document.getElementById('formResidentSignUp').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showToast('Resident Account Created! Welcome.');
+                showScreen('resident');
+            });
+
+            document.getElementById('formResidentLogin').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showScreen('resident');
+                showToast('Welcome back, Resident!');
+            });
+
+            document.getElementById('formOrgLogin').addEventListener('submit', (e) => {
+                e.preventDefault();
+                showScreen('inspector');
+                showToast('Authenticated via Organisation SSO!');
+            });
+
+            document.getElementById('headerLogoutBtn').addEventListener('click', () => showScreen('welcome'));
+
+            const residentPw = document.getElementById('inputResidentPw');
+            const btnToggle = document.getElementById('btnToggleResidentPw');
+            btnToggle.addEventListener('click', () => {
+                if (residentPw.type === 'password') {
+                    residentPw.type = 'text';
+                    btnToggle.textContent = 'Hide';
+                } else {
+                    residentPw.type = 'password';
+                    btnToggle.textContent = 'Show';
+                }
+            });
+        }
+
+        function renderJunxiChecklist() {
+            renderJunxiSection('A', 'junxiSectionA_Items');
+            renderJunxiSection('B', 'junxiSectionB_Items');
+            renderJunxiSection('C', 'junxiSectionC_Items');
+        }
+
+        function renderJunxiSection(catKey, containerId) {
+            const container = document.getElementById(containerId);
+            const items = CHECKLIST_ITEMS[catKey];
+
+            container.innerHTML = items.map(item => `
+                <div class="junxi-item-card ${item.defaultDefect ? 'is-defect' : 'is-pass'}" id="card-${item.id}">
+                    <div class="junxi-item-main-row">
+                        <div class="junxi-item-text">
+                            <span class="junxi-item-index">${item.num}</span> ${item.text}
+                        </div>
+                        <div class="junxi-segmented-group">
+                            <button type="button" class="junxi-segmented-btn pass ${!item.defaultDefect ? 'selected' : ''}" onclick="toggleCheckItem('${item.id}', 'pass')">
+                                <i class="fa-solid fa-check"></i> Pass
+                            </button>
+                            <button type="button" class="junxi-segmented-btn defect ${item.defaultDefect ? 'selected' : ''}" onclick="toggleCheckItem('${item.id}', 'defect')">
+                                <i class="fa-solid fa-xmark"></i> Defect
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="junxi-defect-expansion">
+                        <div class="junxi-quick-chips">
+                            <span style="font-size:0.64rem; color:#64748b;">Quick Remark:</span>
+                            <span class="junxi-chip-btn" onclick="applyRemark('${item.id}', 'Unwanted debris to remove')">Debris to remove</span>
+                            <span class="junxi-chip-btn" onclick="applyRemark('${item.id}', 'Fan grill to clean')">Fan grill to clean</span>
+                            <span class="junxi-chip-btn" onclick="applyRemark('${item.id}', 'Oil can to top up')">Oil top-up</span>
+                        </div>
+                        <input type="text" class="junxi-input" id="remark-${item.id}" value="${item.remark || ''}" placeholder="Enter specific defect notes...">
+
+                        <div class="junxi-photo-rule-box">
+                            <span><i class="fa-solid fa-camera"></i> Evidence Photo (&lt;100KB):</span>
+                            <button type="button" class="btn-secondary-outline" style="padding:3px 7px; font-size:0.68rem;" onclick="showToast('Photo added (72 KB) - Under 100KB limit')">
+                                <i class="fa-solid fa-upload"></i> Attach (72 KB)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function toggleCheckItem(id, status) {
+            const card = document.getElementById(`card-${id}`);
+            const btnPass = card.querySelector('.junxi-segmented-btn.pass');
+            const btnDefect = card.querySelector('.junxi-segmented-btn.defect');
+
+            if (status === 'pass') {
+                card.classList.remove('is-defect');
+                card.classList.add('is-pass');
+                btnPass.classList.add('selected');
+                btnDefect.classList.remove('selected');
+            } else {
+                card.classList.remove('is-pass');
+                card.classList.add('is-defect');
+                btnDefect.classList.add('selected');
+                btnPass.classList.remove('selected');
+            }
+            updateChecklistCount();
+        }
+
+        function applyRemark(id, txt) {
+            document.getElementById(`remark-${id}`).value = txt;
+        }
+
+        function updateChecklistCount() {
+            const count = document.querySelectorAll('.junxi-item-card.is-defect').length;
+            const badge = document.getElementById('junxiDefectSummaryBadge');
+            badge.textContent = `${count} Defects Spotted`;
+            badge.className = count > 0 ? 'status-badge defects' : 'status-badge completed';
+        }
+
+        function setupCanvasDrawing(canvasId, clearBtnId) {
+            const canvas = document.getElementById(canvasId);
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let drawing = false;
+
+            ctx.lineWidth = 2.2;
+            ctx.lineCap = 'round';
+            ctx.strokeStyle = '#0f2b48';
+
+            function getPos(e) {
+                const rect = canvas.getBoundingClientRect();
+                const x = (e.clientX || (e.touches && e.touches[0].clientX)) - rect.left;
+                const y = (e.clientY || (e.touches && e.touches[0].clientY)) - rect.top;
+                return { x, y };
+            }
+
+            canvas.addEventListener('mousedown', (e) => {
+                drawing = true;
+                const p = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+            });
+            canvas.addEventListener('mousemove', (e) => {
+                if (!drawing) return;
+                const p = getPos(e);
+                ctx.lineTo(p.x, p.y);
+                ctx.stroke();
+            });
+            window.addEventListener('mouseup', () => drawing = false);
+
+            canvas.addEventListener('touchstart', (e) => {
+                e.preventDefault();
+                drawing = true;
+                const p = getPos(e);
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+            }, { passive: false });
+
+            canvas.addEventListener('touchmove', (e) => {
+                e.preventDefault();
+                if (!drawing) return;
+                const p = getPos(e);
+                ctx.lineTo(p.x, p.y);
+                ctx.stroke();
+            }, { passive: false });
+
+            window.addEventListener('touchend', () => drawing = false);
+
+            document.getElementById(clearBtnId).addEventListener('click', () => {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+            });
+        }
+
+        function setupViewToggle() {
+            const btnM = document.getElementById('btnViewMobile');
+            const btnD = document.getElementById('btnViewDesktop');
+            const wrap = document.getElementById('appWrapper');
+
+            btnM.addEventListener('click', () => {
+                btnM.classList.add('active');
+                btnD.classList.remove('active');
+                wrap.classList.remove('desktop-mode');
+            });
+            btnD.addEventListener('click', () => {
+                btnD.classList.add('active');
+                btnM.classList.remove('active');
+                wrap.classList.add('desktop-mode');
+            });
+        }
+
+        function downloadYearlyCsv() {
+            const data = "Inspection_ID,Town_Council,Lift_Company,Block_Lift,Address,Servicing_Date,Status\n" +
+                         "INS-001,SBTC,Mitsubishi,554/A,Woodlands St 53,2026-03-23,Defects Reported\n" +
+                         "INS-002,MYTC,Schindler,573/C,Woodlands Dr 44,2026-03-16,Cleared\n";
+            const link = document.createElement("a");
+            link.setAttribute("href", encodeURI("data:text/csv;charset=utf-8," + data));
+            link.setAttribute("download", "Form12b_Archive_2026.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            showToast("Form 12b Archive exported as CSV!");
+        }
+
+        function openReportModal(liftName) {
+            showToast(`Report filed for ${liftName}. Estate Manager notified!`);
+        }
+    </script>
+</body>
+</html>
