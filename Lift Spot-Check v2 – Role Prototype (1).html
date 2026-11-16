@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Lift Spot-Check v2 – Role Prototype</title>
+<style>
+:root{--bg:#f3f5f8;--surf:#fff;--ink:#14213d;--mute:#5b6577;--line:#d9dfe8;--navy:#1f3864;--blue:#2e75b6;--ok:#1e7d4f;--okbg:#e0f3e8;--bad:#b3261e;--badbg:#fde4e2;--warn:#8a5a00;--warnbg:#fff0cc;--info:#1d5fa3;--infobg:#e1eefb;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1522;--surf:#172236;--ink:#e8edf5;--mute:#9aa6bb;--line:#2a3750;--navy:#0b1426;--blue:#6aaae6;--ok:#6fd3a0;--okbg:#14382a;--bad:#ff9a92;--badbg:#431c1a;--warn:#ffc760;--warnbg:#3d2f0d;--info:#8cc2f5;--infobg:#17304d}}
+:root[data-theme="dark"]{--bg:#0e1522;--surf:#172236;--ink:#e8edf5;--mute:#9aa6bb;--line:#2a3750;--navy:#0b1426;--blue:#6aaae6;--ok:#6fd3a0;--okbg:#14382a;--bad:#ff9a92;--badbg:#431c1a;--warn:#ffc760;--warnbg:#3d2f0d;--info:#8cc2f5;--infobg:#17304d}
+*{box-sizing:border-box}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header{background:var(--navy);color:#fff;padding:12px 16px 10px}
+header h1{font-size:17px;margin:0 0 8px;font-weight:650}
+.roles{display:flex;gap:6px;overflow-x:auto;padding-bottom:2px}
+.roles button{flex:none;border:1px solid rgba(255,255,255,.35);background:transparent;color:#fff;padding:7px 12px;border-radius:999px;font:inherit;font-size:13px;cursor:pointer}
+.roles button[aria-pressed=true]{background:#fff;color:#1f3864;font-weight:650}
+main{margin:0 auto;padding:16px;max-width:520px}main.wide{max-width:980px}
+h2{font-size:19px;margin:4px 0 2px}h3{font-size:15px;margin:18px 0 8px}
+.sub{color:var(--mute);margin:0 0 14px;font-size:14px}
+.card{background:var(--surf);border:1px solid var(--line);border-radius:10px;padding:14px;margin-bottom:10px}
+.row{display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.tabs{display:flex;border-bottom:1px solid var(--line);margin-bottom:14px;overflow-x:auto}
+.tabs button{flex:none;background:none;border:0;border-bottom:3px solid transparent;color:var(--mute);padding:10px 14px;font:inherit;cursor:pointer}
+.tabs button[aria-selected=true]{color:var(--ink);border-color:var(--blue);font-weight:650}
+.btn{border:1px solid var(--line);background:var(--surf);color:var(--ink);border-radius:8px;padding:10px 14px;font:inherit;font-weight:600;cursor:pointer;min-height:44px}
+.btn.p{background:var(--blue);border-color:var(--blue);color:#fff}.btn.p:disabled{opacity:.45;cursor:not-allowed}
+.btn.sm{padding:6px 10px;min-height:36px;font-size:13px}.btn.full{width:100%}
+.btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.badge{display:inline-block;padding:2px 9px;border-radius:999px;font-size:12px;font-weight:650;white-space:nowrap}
+.b-open{background:var(--badbg);color:var(--bad)}.b-ack{background:var(--warnbg);color:var(--warn)}.b-rect{background:var(--infobg);color:var(--info)}.b-closed,.b-ok{background:var(--okbg);color:var(--ok)}.b-od{background:var(--bad);color:#fff}
+.muted{color:var(--mute);font-size:13px}
+.item{padding:10px 0;border-top:1px solid var(--line)}.item:first-of-type{border-top:0}
+.mk{display:flex;gap:6px;flex:none}
+.mk button{width:48px;height:44px;border-radius:8px;border:1px solid var(--line);background:var(--surf);color:var(--mute);font-size:18px;cursor:pointer}
+.mk button.y[aria-pressed=true]{background:var(--ok);border-color:var(--ok);color:#fff}
+.mk button.n[aria-pressed=true]{background:var(--bad);border-color:var(--bad);color:#fff}
+input,select,textarea{font:inherit;color:var(--ink);background:var(--surf);border:1px solid var(--line);border-radius:8px;padding:10px;width:100%;min-height:44px}
+label{display:block;font-size:13px;color:var(--mute);margin:8px 0 3px}
+.bar{height:6px;background:var(--line);border-radius:4px;overflow:hidden;margin:6px 0 12px}.bar i{display:block;height:100%;background:var(--blue)}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:14px}
+.stat b{font-size:28px;display:block;line-height:1.1}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--line);vertical-align:top}
+th{color:var(--mute);font-weight:600;font-size:13px}
+.od td{background:var(--badbg)}
+.note{background:var(--infobg);color:var(--info);border-radius:8px;padding:10px 12px;font-size:13px;margin-bottom:12px}
+.sticky{position:sticky;bottom:0;background:var(--bg);padding:10px 0 12px}
+#toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));background:var(--ink);color:var(--bg);padding:10px 16px;border-radius:8px;font-size:14px;opacity:0;pointer-events:none;transition:opacity .2s;max-width:90vw;z-index:20}
+#toast.on{opacity:1}
+.ok-t{color:var(--ok)}.ck td:first-child{width:40%}
+</style>
+</head>
+<body>
+<header>
+<h1>Lift spot-check · prototype</h1>
+<div class="roles" id="roles" role="group" aria-label="View as role"></div>
+</header>
+<main id="app"></main>
+<div id="toast" role="status"></div>
+<script>
+const DAY=864e5,T0=new Date();T0.setHours(0,0,0,0);
+const iso=n=>new Date(T0.getTime()+n*DAY).toISOString().slice(0,10);
+const fmt=s=>new Date(s+"T00:00").toLocaleDateString("en-SG",{day:"numeric",month:"short"});
+const left=s=>Math.round((new Date(s+"T00:00")-T0)/DAY);
+const CO=["Mitsubishi","Schindler","KONE"];
+const GROUPS=[
+["A  Motor room",["Motor room cleanliness – any debris?","Traction machine cleanliness – any leakage?","Controller contactors and relays – any humming?","Bearings – any abnormal noise?","Wire ropes and sheaves – any wear or red dust?","Brake drum and lining – worn off or oily?","Governor machine – any abnormal noise?","Anti-crime device – functioning?","ARD and EBOPS – functioning, replacement date?"]],
+["B  Lift car",["COB buttons and CPI – functioning?","Car fan and grille – any abnormalities?","Car lights and diffuser – lit and clear?","Car door operation – any noise?","Door side gaps – less than 10 mm?","Sill to sill clearance – less than 35 mm?","Safety edge and sensor – functioning?","Travelling – any jerkiness?"]],
+["C  Hoistway and lift pit",["Hall buttons and HPI – functioning?","Landing door locks – any noise?","Landing door shoes, tracks, rollers – wear and tear?","Landing door self-closing devices – self-closing?","Levelling at each landing – level?","Car top safety and cleanliness – safety netting?","Safety switches – functioning?","Lift pit cleanliness – any debris?"]]];
+const ITEMS=GROUPS.flatMap((g,gi)=>g[1].map((t,i)=>({k:gi+"-"+i,t,g:g[0][0]+"."+(i+1)})));
+const S={user:null,step:"",pend:"",role:"inspector",tab:"today",cur:null,marks:{},rem:{},photo:{},co:"Mitsubishi",fco:"All",open:null,atab:"users",
+lifts:[
+{id:"538/A",addr:"Woodlands Dr 53",co:"Mitsubishi",done:false,out:false},
+{id:"573/C",addr:"Woodlands Dr 44",co:"Mitsubishi",done:false,out:false},
+{id:"112/B",addr:"Woodlands Ave 6",co:"Schindler",done:false,out:false},
+{id:"220/D",addr:"Woodlands St 22",co:"KONE",done:true,out:true}],
+defects:[
+{id:1,lift:"538/A",co:"Mitsubishi",item:"Traction machine cleanliness",rem:"Unwanted items to remove",due:iso(-3),st:"Open"},
+{id:2,lift:"573/C",co:"Mitsubishi",item:"Car fan and grille",rem:"Fan grille to clean",due:iso(5),st:"Acknowledged"},
+{id:3,lift:"112/B",co:"Schindler",item:"Lift pit cleanliness",rem:"Lift pit to clean",due:iso(9),st:"Open"},
+{id:4,lift:"220/D",co:"KONE",item:"Car top safety",rem:"Oil can to top up",due:iso(2),st:"Rectified"}],
+users:[["Daniel Koh","LMS inspector","All lifts"],["A. Tan","LMS inspector","Woodlands"],["Mitsubishi desk","Lift company","Mitsubishi only"],["M. Lim","Manager","Whole town council"],["Site admin","Admin","Everything"]]};
+const $=s=>document.querySelector(s);
+const toast=m=>{const t=$("#toast");t.textContent=m;t.className="on";clearTimeout(toast.h);toast.h=setTimeout(()=>t.className="",2400)};
+const badge=d=>{if(d.st==="Closed")return'<span class="badge b-closed">Closed</span>';if(d.st==="Rectified")return'<span class="badge b-rect">Awaiting joint inspection</span>';const l=left(d.due);return(l<0?'<span class="badge b-od">Overdue '+(-l)+'d</span> ':"")+'<span class="badge '+(d.st==="Open"?"b-open":"b-ack")+'">'+d.st+"</span>"};
+const due=d=>d.st==="Closed"||d.st==="Rectified"?"":"Due "+fmt(d.due)+(left(d.due)>=0?" · "+left(d.due)+" days left":"");
+const ROLES=[["inspector","LMS inspector"],["contractor","Lift company"],["manager","Manager"],["admin","Admin"],["resident","Resident"]];
+function setRole(r){S.role=r;S.tab=r==="inspector"?"today":"open";S.cur=null;S.open=null;render();scrollTo(0,0)}
+function render(){
+if(!S.user){$("#roles").innerHTML="";$("#app").className="";$("#app").innerHTML=vLogin();return}
+$("#roles").innerHTML=ROLES.map(r=>`<button aria-pressed="${S.role===r[0]}" onclick="setRole('${r[0]}')">${r[1]}</button>`).join("");
+$("#roles").innerHTML=`<span style="color:#fff;align-self:center;margin-right:auto;flex:none;font-size:13px">Signed in as <b>${S.user}</b></span><button onclick="signOut()">Sign out</button>`;const m=$("#app");m.className=(S.role==="manager"||S.role==="admin")?"wide":"";
+m.innerHTML=({inspector:vInsp,contractor:vCon,manager:vMgr,admin:vAdm,resident:vRes})[S.role]()}
+const tabs=(list,key)=>`<div class="tabs" role="tablist">${list.map(t=>`<button role="tab" aria-selected="${S[key]===t[0]}" onclick="S.${key}='${t[0]}';S.open=null;render()">${t[1]}</button>`).join("")}</div>`;
+
+/* ---------- Login ---------- */
+const ACC={inspector:["Daniel Koh","inspector","LMS inspector"],manager:["M. Lim","manager","Manager"],admin:["Site admin","admin","Admin"]};
+function signIn(name,role,co){S.user=name;S.role=role;if(co)S.co=co;S.tab=role==="inspector"?"today":"open";S.step="";S.cur=null;S.open=null;render();scrollTo(0,0)}
+function signOut(){S.user=null;S.step="";render();toast("Signed out")}
+function conNext(){const e=($("#em").value||"").toLowerCase(),p=$("#pw").value;const c=CO.find(c=>e.includes(c.toLowerCase()));if(!c||!p){toast("Use a company email such as tech@kone.demo, plus any password");return}S.pend=c;S.step="otp";render()}
+function otpGo(){if(($("#otp").value||"").length<6){toast("Enter the 6-digit code");return}signIn(S.pend+" desk","contractor",S.pend)}
+function vLogin(){
+if(S.step==="sso")return`<div style="max-width:520px;margin:0 auto"><button class="btn sm" onclick="S.step='';render()">Back</button><h2 style="margin-top:10px">Choose a work account</h2><p class="sub">Stand-in for your organisation’s SSO page. In the real app this screen is run by your identity provider, and your role comes from your account group.</p>`+Object.values(ACC).map(a=>`<div class="card row" style="align-items:center"><div><b>${a[0]}</b><div class="muted">${a[2]}</div></div><button class="btn p sm" onclick="signIn('${a[0]}','${a[1]}')">Continue</button></div>`).join("")+"</div>";
+if(S.step==="otp")return`<div style="max-width:520px;margin:0 auto"><button class="btn sm" onclick="S.step='';render()">Back</button><h2 style="margin-top:10px">Enter your code</h2><p class="sub">We sent a 6-digit code to your registered phone. In this demo, any 6 digits work.</p><div class="card"><label>6-digit code</label><input id="otp" inputmode="numeric" maxlength="6" autocomplete="one-time-code"><div class="btns"><button class="btn p full" onclick="otpGo()">Verify and sign in</button></div></div></div>`;
+return`<div style="max-width:520px;margin:0 auto"><h2>Sign in</h2><p class="sub">Lift spot-check. Choose how you sign in.</p><div class="card"><b>LMS staff and managers</b><p class="muted">Use your work account. Inspector, manager and admin roles are set by your account group.</p><button class="btn p full" onclick="S.step='sso';render()">Sign in with work account (SSO)</button></div><div class="card"><b>Lift companies</b><p class="muted">Email, password and a one-time code. Admin creates these accounts.</p><label>Email</label><input id="em" type="email" value="tech@mitsubishi.demo" autocomplete="username"><label>Password</label><input id="pw" type="password" value="demo-password" autocomplete="current-password"><div class="btns"><button class="btn p full" onclick="conNext()">Continue</button></div><p class="muted">Demo companies: Mitsubishi, Schindler, KONE.</p></div><div class="card"><b>Residents</b><p class="muted">No account needed. See whether your lift is running.</p><button class="btn full" onclick="signIn('Guest','resident')">View lift status</button></div></div>`}
+
+/* ---------- Inspector ---------- */
+function vInsp(){
+if(S.cur)return vCheck();
+const pend=S.defects.filter(d=>d.st==="Rectified");
+let h=`<h2>Hello, Daniel</h2><p class="sub">${S.lifts.filter(l=>!l.done).length} lifts to check · ${pend.length} ready for joint inspection</p>`+
+tabs([["today","Today’s lifts"],["joint","Joint inspection ("+pend.length+")"],["data","Import / export"]],"tab");
+if(S.tab==="today")h+=S.lifts.map(l=>`<div class="card"><div class="row"><div><b>${l.id}</b> · ${l.addr}<div class="muted">Lift company: ${l.co}</div></div>${l.done?'<span class="badge b-ok">Checked</span>':""}</div>${l.done?"":`<div class="btns"><button class="btn p full" onclick="startCheck('${l.id}')">Start checklist</button></div>`}</div>`).join("");
+if(S.tab==="joint")h+=(pend.length?`<p class="note">Lift company has submitted work done. Verify on site, then close the defect.</p>`+pend.map(d=>`<div class="card"><b>${d.lift}</b> · ${d.item}<div class="muted">${d.co} signed off · ${d.rem}</div><div class="muted">Photo attached · 76 KB</div><div class="btns"><button class="btn p" onclick="closeD(${d.id})">Verified, close defect</button><button class="btn" onclick="reopen(${d.id})">Not cleared, reopen</button></div></div>`).join(""):`<div class="card muted">Nothing waiting. Rectified defects appear here for joint inspection.</div>`);
+if(S.tab==="data")h+=`<div class="card"><b>Mass import</b><p class="muted">Upload a spreadsheet of lifts and monthly servicing dates. Each row becomes a lift on your schedule.</p><button class="btn full" onclick="toast('Prototype: file picker would open here')">Choose spreadsheet</button></div><div class="card"><b>Mass export</b><p class="muted">Download all spot-checks and defects for a date range as one file.</p><label>Range</label><select><option>This month</option><option>Last 3 months</option><option>This year</option></select><div class="btns"><button class="btn full" onclick="toast('Prototype: export would download here')">Export spreadsheet</button></div></div>`;
+return h}
+function startCheck(id){S.cur=S.lifts.find(l=>l.id===id);S.marks={};S.rem={};S.photo={};render();scrollTo(0,0)}
+function vCheck(){
+const n=Object.keys(S.marks).length,l=S.cur;
+let h=`<button class="btn sm" onclick="S.cur=null;render()">Back</button><h2 style="margin-top:10px">${l.id} · ${l.addr}</h2><p class="sub">Lift company: ${l.co} · ${fmt(iso(0))}</p><div class="muted">${n} of ${ITEMS.length} answered</div><div class="bar"><i style="width:${n/ITEMS.length*100}%"></i></div>`;
+GROUPS.forEach((g,gi)=>{h+=`<div class="row" style="align-items:center"><h3>${g[0]}</h3><button class="btn sm" onclick="allOk(${gi})">All OK</button></div><div class="card">`+ITEMS.filter(i=>i.k.startsWith(gi+"-")).map(i=>`<div class="item"><div class="row"><div>${i.t}</div><div class="mk"><button class="y" aria-label="OK" aria-pressed="${S.marks[i.k]==="ok"}" onclick="mark('${i.k}','ok')">✓</button><button class="n" aria-label="Defect" aria-pressed="${S.marks[i.k]==="x"}" onclick="mark('${i.k}','x')">✗</button></div></div>${S.marks[i.k]==="x"?`<label>What needs fixing?</label><input value="${S.rem[i.k]||""}" oninput="S.rem['${i.k}']=this.value" placeholder="e.g. Fan grille to clean"><div class="btns"><button class="btn sm" onclick="S.photo['${i.k}']=!S.photo['${i.k}'];render()">${S.photo[i.k]?"Photo attached · 82 KB (remove)":"Add photo"}</button></div>`:""}</div>`).join("")+"</div>"});
+const x=Object.values(S.marks).filter(v=>v==="x").length;
+return h+`<div class="sticky"><button class="btn p full" ${n<ITEMS.length?"disabled":""} onclick="submitCheck()">${n<ITEMS.length?"Answer all items to submit":"Submit and send "+x+" defect"+(x===1?"":"s")+" to "+l.co}</button></div>`}
+function mark(k,v){S.marks[k]=v;const y=scrollY;render();scrollTo(0,y)}
+function allOk(gi){ITEMS.filter(i=>i.k.startsWith(gi+"-")).forEach(i=>{if(!S.marks[i.k])S.marks[i.k]="ok"});const y=scrollY;render();scrollTo(0,y)}
+function submitCheck(){const l=S.cur;let c=0;ITEMS.forEach(i=>{if(S.marks[i.k]==="x"){c++;S.defects.push({id:Date.now()+c,lift:l.id,co:l.co,item:i.t.split(" – ")[0],rem:S.rem[i.k]||"See checklist",due:iso(14),st:"Open"})}});l.done=true;S.cur=null;S.tab="today";render();toast(c?c+" defect(s) emailed to "+l.co+", due in 14 days":"Spot-check saved, no defects")}
+function closeD(id){S.defects.find(d=>d.id===id).st="Closed";render();toast("Defect closed and filed")}
+function reopen(id){const d=S.defects.find(d=>d.id===id);d.st="Open";d.due=iso(7);render();toast("Reopened, new due date "+fmt(d.due))}
+
+/* ---------- Contractor ---------- */
+function vCon(){
+const mine=S.defects.filter(d=>d.co===S.co);
+const act=mine.filter(d=>d.st==="Open"||d.st==="Acknowledged").sort((a,b)=>a.due<b.due?-1:1);
+const dn=mine.filter(d=>d.st==="Rectified"||d.st==="Closed");
+let h=`<h2>My open defects</h2><label>Signed in as</label><select onchange="S.co=this.value;S.open=null;render()">${CO.map(c=>`<option ${c===S.co?"selected":""}>${c}</option>`).join("")}</select><p class="note" style="margin-top:12px">You only see defects for ${S.co} lifts. Other companies’ defects are hidden.</p>`+tabs([["open","To fix ("+act.length+")"],["done","Submitted ("+dn.length+")"]],"tab");
+if(S.tab==="open")h+=act.length?act.map(d=>`<div class="card"><div class="row"><div><b>${d.lift}</b> · ${d.item}</div></div><div style="margin:6px 0">${badge(d)}</div><div>${d.rem}</div><div class="muted">${due(d)}</div>${S.open===d.id?`<label>Work done</label><textarea rows="2" id="wd" placeholder="Describe what was done"></textarea><div class="btns"><button class="btn sm" onclick="this.textContent='Photo attached · 64 KB'">Add photo</button></div><label>Technician name (e-sign)</label><input id="sg" placeholder="Type full name to sign"><div class="btns"><button class="btn p" onclick="rectify(${d.id})">Sign and submit</button><button class="btn" onclick="S.open=null;render()">Cancel</button></div>`:`<div class="btns">${d.st==="Open"?`<button class="btn" onclick="ack(${d.id})">Acknowledge</button>`:""}<button class="btn p" onclick="S.open=${d.id};render()">Submit work done</button></div>`}</div>`).join(""):`<div class="card muted">All clear. New defects arrive here and by email.</div>`;
+else h+=dn.length?dn.map(d=>`<div class="card"><b>${d.lift}</b> · ${d.item}<div style="margin-top:6px">${badge(d)}</div></div>`).join(""):`<div class="card muted">Nothing submitted yet.</div>`;
+return h}
+function ack(id){S.defects.find(d=>d.id===id).st="Acknowledged";render();toast("Acknowledged, LMS can see you have received it")}
+function rectify(id){if(!$("#sg").value.trim()){toast("Type the technician’s name to sign");return}S.defects.find(d=>d.id===id).st="Rectified";S.open=null;render();toast("Sent to LMS for joint inspection")}
+
+/* ---------- Manager ---------- */
+function vMgr(){
+const D=S.defects,od=D.filter(d=>(d.st==="Open"||d.st==="Acknowledged")&&left(d.due)<0).length;
+const f=S.fco==="All"?D:D.filter(d=>d.co===S.fco);
+let h=`<h2>Town council overview</h2><p class="sub">Defects grouped by lift company, with due dates and sign-off status.</p><div class="stats"><div class="card stat"><b>${D.filter(d=>d.st==="Open"||d.st==="Acknowledged").length}</b>Open defects</div><div class="card stat"><b style="color:var(--bad)">${od}</b>Overdue</div><div class="card stat"><b>${D.filter(d=>d.st==="Rectified").length}</b>Awaiting joint inspection</div><div class="card stat"><b>${S.lifts.filter(l=>l.done).length}/${S.lifts.length}</b>Spot-checks done</div></div><div class="row" style="align-items:flex-end"><div style="flex:1;max-width:240px"><label>Lift company</label><select onchange="S.fco=this.value;render()">${["All",...CO].map(c=>`<option ${c===S.fco?"selected":""}>${c}</option>`).join("")}</select></div><div class="btns" style="margin:0"><button class="btn" onclick="toast('Reminder emailed to lift companies with overdue defects')">Send overdue reminders</button><button class="btn p" onclick="toast('Prototype: report would download here')">Export report</button></div></div>`;
+CO.filter(c=>S.fco==="All"||c===S.fco).forEach(c=>{const r=f.filter(d=>d.co===c).sort((a,b)=>a.due<b.due?-1:1);h+=`<h3>${c} · ${r.length} defect${r.length===1?"":"s"}</h3><div class="card scroll" style="padding:0"><table><tr><th>Lift</th><th>Defect</th><th>Due</th><th>Status</th></tr>${r.length?r.map(d=>`<tr class="${(d.st==="Open"||d.st==="Acknowledged")&&left(d.due)<0?"od":""}"><td><b>${d.lift}</b></td><td>${d.item}<div class="muted">${d.rem}</div></td><td>${d.st==="Closed"?"–":fmt(d.due)}</td><td>${badge(d)}</td></tr>`).join(""):'<tr><td colspan="4" class="muted">No defects</td></tr>'}</table></div>`});
+return h}
+
+/* ---------- Admin ---------- */
+function vAdm(){
+let h=`<h2>Administration</h2><p class="sub">Manage people, lifts, and what each role can see.</p>`+tabs([["users","Users"],["lifts","Lifts"],["access","Access rules"]],"atab");
+if(S.atab==="users"){h+=`<div class="card scroll" style="padding:0"><table><tr><th>Name</th><th>Role</th><th>Can see</th></tr>${S.users.map(u=>`<tr><td>${u[0]}</td><td>${u[1]}</td><td>${u[2]}</td></tr>`).join("")}</table></div><div class="card"><b>Add user</b><label>Name</label><input id="un"><label>Role</label><select id="ur"><option>LMS inspector</option><option>Lift company</option><option>Manager</option><option>Admin</option></select><div class="btns"><button class="btn p" onclick="addUser()">Add user</button></div></div>`}
+if(S.atab==="lifts"){h+=`<div class="card scroll" style="padding:0"><table><tr><th>Lift</th><th>Address</th><th>Lift company</th></tr>${S.lifts.map(l=>`<tr><td>${l.id}</td><td>${l.addr}</td><td>${l.co}</td></tr>`).join("")}</table></div><div class="card"><b>Add lift</b><label>Block / lift no.</label><input id="ln"><label>Address</label><input id="la"><label>Lift company</label><select id="lc">${CO.map(c=>`<option>${c}</option>`).join("")}</select><div class="btns"><button class="btn p" onclick="addLift()">Add lift</button><button class="btn" onclick="toast('Prototype: spreadsheet import would open here')">Import many lifts</button></div></div>`}
+if(S.atab==="access")h+=`<div class="card scroll" style="padding:0"><table><tr><th>Can</th><th>Inspector</th><th>Lift company</th><th>Manager</th><th>Admin</th><th>Resident</th></tr>${[["Fill checklist","✓","","","",""],["See all defects","✓","Own lifts","✓","✓",""],["Submit work done","","✓","","",""],["Close defect","✓","","","",""],["View stats and export","","","✓","✓",""],["Manage users and lifts","","","","✓",""],["See lift status notice","✓","✓","✓","✓","✓"]].map(r=>"<tr><td>"+r[0]+"</td>"+r.slice(1).map(c=>"<td>"+c+"</td>").join("")+"</tr>").join("")}</table></div><p class="note" style="margin-top:12px">Access is enforced on the server by lift company ID, not only by hiding buttons.</p>`;
+return h}
+function addUser(){const n=$("#un").value.trim();if(!n){toast("Enter a name first");return}S.users.push([n,$("#ur").value,"Set by role"]);render();toast(n+" added")}
+function addLift(){const n=$("#ln").value.trim();if(!n){toast("Enter a block and lift number");return}S.lifts.push({id:n,addr:$("#la").value||"–",co:$("#lc").value,done:false,out:false});render();toast("Lift added to the schedule")}
+
+/* ---------- Resident ---------- */
+function vRes(){return`<h2>Lift status</h2><p class="sub">Read-only. Shows whether your lift is running. No inspection details are shown.</p><label>Block</label><input placeholder="Search your block" oninput="document.querySelectorAll('.rl').forEach(e=>e.style.display=e.textContent.toLowerCase().includes(this.value.toLowerCase())?'':'none')">`+`<div style="margin-top:12px">`+S.lifts.map(l=>`<div class="card rl"><div class="row"><div><b>${l.id}</b> · ${l.addr}</div><span class="badge ${l.out?"b-ack":"b-ok"}">${l.out?"Under maintenance":"In service"}</span></div>${l.out?'<div class="muted" style="margin-top:6px">Servicing in progress. Back in service soon.</div>':""}</div>`).join("")+"</div>"}
+render();
+</script>
+</body>
+</html>
